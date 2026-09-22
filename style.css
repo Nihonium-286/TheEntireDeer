@@ -1,0 +1,42 @@
+body {
+    margin: 0;
+    padding: 40px;
+
+    font-family: sans-serif;
+    background: #202020;
+    color: white;
+}
+
+h1 {
+    text-align: center;
+}
+
+#projects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 40px;
+}
+
+.project {
+    width: 220px;
+    height: 140px;
+
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: #303030;
+    border: 2px solid #555;
+    border-radius: 10px;
+
+    cursor: pointer;
+}
+
+.project:hover {
+    background: #383838;
+}
+
+.project h2 {
+    margin-top: 0;
+}
