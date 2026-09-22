@@ -20,17 +20,18 @@ h1 {
 }
 
 .project {
+    display: block;
+    color: white;
+    text-decoration: none;
+
     width: 220px;
     height: 140px;
-
     padding: 20px;
     box-sizing: border-box;
 
     background: #303030;
     border: 2px solid #555;
     border-radius: 10px;
-
-    cursor: pointer;
 }
 
 .project:hover {
