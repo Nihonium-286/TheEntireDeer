@@ -11,7 +11,8 @@ h1 {
     text-align: center;
 }
 
-#projects {
+#menus,
+#desmos-projects {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -40,4 +41,22 @@ h1 {
 
 .project h2 {
     margin-top: 0;
+}
+
+.back-button {
+    display: inline-block;
+    padding: 12px 20px;
+
+    background: #303030;
+    color: white;
+    text-decoration: none;
+
+    border: 2px solid #555;
+    border-radius: 10px;
+
+    transition: background 0.15s;
+}
+
+.back-button:hover {
+    background: #383838;
 }
