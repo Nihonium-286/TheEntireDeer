@@ -12,7 +12,8 @@ h1 {
 }
 
 #menus,
-#desmos-projects {
+#desmos-projects,
+#project-documents {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;

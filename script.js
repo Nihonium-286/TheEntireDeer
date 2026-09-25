@@ -3,6 +3,12 @@ const menus = [
         name: "Desmos Projects",
         description: "My Desmos projects",
         link: "desmos.html"
+    },
+    
+    {
+        name: "Project Documents",
+        description: "Links to Docs",
+        link: "docs.html"
     }
 ];
 
@@ -41,6 +47,13 @@ function createMenuBox(menu) {
     return box;
 }
 
+const projectDocs = [
+	{
+        name: "Black Hollow",
+        description: "A stand alone game",
+        link: "https://docs.google.com/document/d/15DVJgwDVlHUEgDE2hS1kHFdQgyfbHjvyplt1CQFOE78/edit?usp=sharing"
+    }
+];
 
 function createProjectBox(project) {
     const box = document.createElement("a");
@@ -67,12 +80,20 @@ if (menuContainer) {
     }
 }
 
-
 const projectContainer = document.getElementById("desmos-projects");
 
 if (projectContainer) {
     for (const project of desmosProjects) {
         const box = createProjectBox(project);
         projectContainer.appendChild(box);
+    }
+}
+
+const documentContainer = document.getElementById("project-documents");
+
+if (documentContainer) {
+    for (const project of projectDocs) {
+        const box = createProjectBox(project);
+        documentContainer.appendChild(box);
     }
 }
