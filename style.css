@@ -13,7 +13,8 @@ h1 {
 
 #menus,
 #desmos-projects,
-#project-documents {
+#project-documents,
+#scratch-projects {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
@@ -60,4 +61,18 @@ h1 {
 
 .back-button:hover {
     background: #383838;
+}
+
+.board {
+    display: grid;
+    gap: 10px;
+
+    margin: 40px auto;
+
+    width: fit-content;
+}
+
+.board .project {
+    width: auto;
+    height: auto;
 }
