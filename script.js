@@ -35,8 +35,6 @@ for (let y = 0; y < currentSettings.height; y++) {
     grid.push(row);
 }
 
-// Before boxes are init.
-
 const menus = [
     {
         name: "Desmos Projects",
@@ -52,8 +50,8 @@ const menus = [
         name: "Project Documents",
         description: "Links to Docs",
         link: "docs.html",
-        width: 1,
-        height: 3,
+        width: 2,
+        height: 2,
         x: 2,
         y: 0
     },
@@ -64,8 +62,8 @@ const menus = [
         link: "scratch.html",
         width: 1,
         height: 2,
-        x: 2,
-        y: 0
+        x: 0,
+        y: 1
     }
 ];
 
@@ -108,8 +106,18 @@ const scratchProjects = [
         description: "Simulates the movement of birds.",
         link: "https://scratch.mit.edu/projects/787333573",
         width: 2,
-        height: 2,
+        height: 1,
         x: 0,
+        y: 0
+    },
+    
+    {
+        name: "Sunburst Diagram Generator",
+        description: "Generates a radial doughnut dendrogram.",
+        link: "https://scratch.mit.edu/projects/1272370059",
+        width: 2,
+        height: 2,
+        x: 2,
         y: 0
     },
 
@@ -117,10 +125,10 @@ const scratchProjects = [
         name: "Mandelbrot",
         description: "A Mandelbrot Explorer",
         link: "https://scratch.mit.edu/projects/1385787141",
-        width: 1,
-        height: 2,
-        x: 2,
-        y: 0
+        width: 2,
+        height: 1,
+        x: 0,
+        y: 1
     }
 ];
 
@@ -165,42 +173,6 @@ function createProjectBox(project) {
     return box;
 }
 
-const menuContainer = document.getElementById("menus");
-
-if (menuContainer) {
-    for (const menu of menus) {
-        const box = createMenuBox(menu);
-        menuContainer.appendChild(box);
-    }
-}
-
-const projectContainer = document.getElementById("desmos-projects");
-
-if (projectContainer) {
-    for (const project of desmosProjects) {
-        const box = createProjectBox(project);
-        projectContainer.appendChild(box);
-    }
-}
-
-const documentContainer = document.getElementById("project-documents");
-
-if (documentContainer) {
-    for (const project of projectDocs) {
-        const box = createProjectBox(project);
-        documentContainer.appendChild(box);
-    }
-}
-
-const scratchContainer = document.getElementById("scratch-projects");
-
-if (scratchContainer) {
-    for (const project of scratchProjects) {
-        const box = createProjectBox(project);
-        scratchContainer.appendChild(box);
-    }
-}
-
 let currentBoxes;
 
 if (menuName === "main") {
@@ -209,6 +181,8 @@ if (menuName === "main") {
     currentBoxes = desmosProjects;
 } else if (menuName === "docs") {
     currentBoxes = projectDocs;
+} else if (menuName === "scratch") {
+    currentBoxes = scratchProjects;
 }
 
 function canPlaceBox(box, x, y) {
@@ -240,57 +214,92 @@ function canPlaceBox(box, x, y) {
 }
 
 function moveBox(box, x, y) {
-    // Check whether the box can move there
-    if (!canPlaceBox(box, x, y)) {
-        return false;
+    // Try to move
+    if (canPlaceBox(box, x, y)) {
+        box.x = x;
+        box.y = y;
+
+        occupiedGrid = buildGrid();
+        renderBoard();
+
+        return true;
     }
 
-    // Move the box
-    box.x = x;
-    box.y = y;
+    // Find what is blocking the destination
+    for (let gridY = y; gridY < y + box.height; gridY++) {
+        for (let gridX = x; gridX < x + box.width; gridX++) {
 
-    // Update the occupied grid
-    occupiedGrid = buildGrid();
+            // Ignore cells outside the board
+            if (
+                gridX < 0 ||
+                gridY < 0 ||
+                gridX >= currentSettings.width ||
+                gridY >= currentSettings.height
+            ) {
+                continue;
+            }
 
-    return true;
+            const occupant = occupiedGrid[gridY][gridX];
+
+            if (occupant !== null && occupant !== box) {
+                selectedBox = occupant;
+                renderBoard();
+                return false;
+            }
+        }
+    }
+
+    return false;
 }
 
 function renderBoard() {
     const container =
         document.getElementById("menus") ||
         document.getElementById("desmos-projects") ||
-        document.getElementById("project-documents");
+        document.getElementById("project-documents") ||
+        document.getElementById("scratch-projects");
 
     if (!container) {
         return;
     }
 
-    // Clear the normal flex layout
     container.innerHTML = "";
-
-    // Make the container into our puzzle board
     container.className = "board";
 
+    const CELL_SIZE = 120;
+    const GAP = 10;
+
     container.style.gridTemplateColumns =
-        `repeat(${currentSettings.width}, 100px)`;
+        `repeat(${currentSettings.width}, ${CELL_SIZE}px)`;
 
     container.style.gridTemplateRows =
-        `repeat(${currentSettings.height}, 100px)`;
+        `repeat(${currentSettings.height}, ${CELL_SIZE}px)`;
 
     for (const boxData of currentBoxes) {
-        let box;
         
+        let box;
+
         if (menuName === "main") {
-			box = createMenuBox(boxData);
-		} else {
-			box = createProjectBox(boxData);
-		}
+            box = createMenuBox(boxData);
+        } else {
+            box = createProjectBox(boxData);
+        }
 
         box.style.gridColumn =
             `${boxData.x + 1} / span ${boxData.width}`;
 
         box.style.gridRow =
             `${boxData.y + 1} / span ${boxData.height}`;
+
+        box.style.width =
+            `${boxData.width * CELL_SIZE + (boxData.width - 1) * GAP}px`;
+
+        box.style.height =
+            `${boxData.height * CELL_SIZE + (boxData.height - 1) * GAP}px`;
+
+		if (boxData === selectedBox) {
+			box.classList.add("selected");
+		}
 
         container.appendChild(box);
     }
@@ -321,7 +330,31 @@ function buildGrid() {
 }
 
 let occupiedGrid = buildGrid();
+let selectedBox = currentBoxes[0];
+
+document.addEventListener("keydown", function(event) {
+    if (!selectedBox) {
+        return;
+    }
+
+    let newX = selectedBox.x;
+    let newY = selectedBox.y;
+
+    if (event.key === "ArrowLeft") {
+        newX--;
+    } else if (event.key === "ArrowRight") {
+        newX++;
+    } else if (event.key === "ArrowUp") {
+        newY--;
+    } else if (event.key === "ArrowDown") {
+        newY++;
+    } else {
+        return;
+    }
+
+    event.preventDefault();
+
+    moveBox(selectedBox, newX, newY);
+});
 
 renderBoard();
-
-console.log(occupiedGrid);

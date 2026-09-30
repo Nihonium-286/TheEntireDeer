@@ -15,11 +15,7 @@ h1 {
 #desmos-projects,
 #project-documents,
 #scratch-projects {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 40px;
+	margin-top: 40px;
 }
 
 .project {
@@ -39,6 +35,11 @@ h1 {
 
 .project:hover {
     background: #383838;
+}
+
+.board .project.selected {
+    border-color: white;
+    box-shadow: 0 0 0 3px white;
 }
 
 .project h2 {
@@ -73,6 +74,6 @@ h1 {
 }
 
 .board .project {
-    width: auto;
-    height: auto;
+    box-sizing: border-box;
+    margin: 0;
 }
