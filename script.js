@@ -332,10 +332,72 @@ function buildGrid() {
 let occupiedGrid = buildGrid();
 let selectedBox = currentBoxes[0];
 
+const selectButton = document.getElementById("select-button");
+
+if (selectButton) {
+    selectButton.addEventListener("click", function() {
+        const currentIndex = currentBoxes.indexOf(selectedBox);
+
+        selectedBox =
+            currentBoxes[
+                (currentIndex + 1) % currentBoxes.length
+            ];
+
+        renderBoard();
+    });
+}
+
 document.addEventListener("keydown", function(event) {
     if (!selectedBox) {
         return;
     }
+    
+    if (event.key === "Tab") {
+		event.preventDefault();
+
+		const currentIndex = currentBoxes.indexOf(selectedBox);
+
+		if (event.shiftKey) {
+			selectedBox =
+				currentBoxes[
+					(currentIndex - 1 + currentBoxes.length) %
+					currentBoxes.length
+				];
+		} else {
+			selectedBox =
+				currentBoxes[
+					(currentIndex + 1) %
+					currentBoxes.length
+				];
+		}
+
+		renderBoard();
+		return;
+	}
+	
+	if (event.key === "Enter") {
+		event.preventDefault();
+
+		if (!selectedBox.link) {
+			return;
+		}
+
+		if (menuName === "main") {
+			window.location.href = selectedBox.link;
+		} else {
+			window.open(selectedBox.link, "_blank");
+		}
+
+		return;
+	}
+	
+	if (event.key === "Escape") {
+		if (menuName !== "main") {
+			window.location.href = "index.html";
+		}
+
+		return;
+	}
 
     let newX = selectedBox.x;
     let newY = selectedBox.y;
