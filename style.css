@@ -71,6 +71,10 @@ h1 {
     margin: 40px auto;
 
     width: fit-content;
+
+    border: 2px solid #555;
+    padding: 10px;
+    box-sizing: border-box;
 }
 
 .board .project {
