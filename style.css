@@ -31,6 +31,8 @@ h1 {
     background: #303030;
     border: 2px solid #555;
     border-radius: 10px;
+    
+    overflow: hidden;
 }
 
 .project:hover {
@@ -44,6 +46,38 @@ h1 {
 
 .project h2 {
     margin-top: 0;
+}
+
+.project-content {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.project-image {
+    width: 100%;
+    height: 70%;
+
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.project-text {
+    padding-top: 8px;
+    overflow: hidden;
+}
+
+.project-text h2 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.project-text p {
+    margin: 4px 0 0;
+    font-size: 14px;
+    line-height: 1.2;
 }
 
 .back-button {
@@ -80,6 +114,28 @@ h1 {
 .board .project {
     box-sizing: border-box;
     margin: 0;
+    transition: transform 0.18s ease;
+}
+
+.board .project.cursor-hit {
+    animation: cursor-hit 0.25s ease;
+}
+
+@keyframes cursor-hit {
+    0% {
+        box-shadow: 0 0 0 3px white;
+        transform: scale(1);
+    }
+
+    40% {
+        box-shadow: 0 0 0 7px white;
+        transform: scale(1.03);
+    }
+
+    100% {
+        box-shadow: 0 0 0 3px white;
+        transform: scale(1);
+    }
 }
 
 .navigation {

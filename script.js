@@ -6,7 +6,7 @@ const menuSettings = {
 
     desmos: {
         width: 4,
-        height: 3
+        height: 4
     },
 
     docs: {
@@ -73,6 +73,7 @@ const desmosProjects = [
         name: "Renderer",
         description: "My custom Desmos renderer.",
         link: "https://www.desmos.com/calculator/5cb6ada23e",
+        image: "images/Renderer.png",
         width: 2,
         height: 2,
         x: 0,
@@ -83,6 +84,7 @@ const desmosProjects = [
         name: "Enigma",
         description: "Desmos Enigma Machine Emulator",
         link: "https://www.desmos.com/calculator/f59a72f2ed",
+        image: "images/Enigma.png",
         width: 1,
         height: 2,
         x: 2,
@@ -93,10 +95,22 @@ const desmosProjects = [
         name: "Minesweeper",
         description: "Desmos Minesweeper",
         link: "https://www.desmos.com/calculator/e27ec502d6",
+        image: "images/Minesweeper.png",
         width: 2,
         height: 1,
         x: 0,
         y: 2
+    },
+    
+    {
+        name: "Statistics",
+        description: "A statistics calculator",
+        link: "https://www.desmos.com/calculator/re0psekvs2",
+        image: "images/Statistics.png",
+        width: 2,
+        height: 1,
+        x: 0,
+        y: 3
     }
 ];
 
@@ -166,8 +180,17 @@ function createProjectBox(project) {
     box.target = "_blank";
 
     box.innerHTML = `
-        <h2>${project.name}</h2>
-        <p>${project.description}</p>
+        <div class="project-content">
+            ${project.image
+                ? `<img src="${project.image}" class="project-image">`
+                : ""
+            }
+
+            <div class="project-text">
+                <h2>${project.name}</h2>
+                <p>${project.description}</p>
+            </div>
+        </div>
     `;
 
     return box;
@@ -213,43 +236,102 @@ function canPlaceBox(box, x, y) {
     return true;
 }
 
-function moveBox(box, x, y) {
-    // Try to move
-    if (canPlaceBox(box, x, y)) {
-        box.x = x;
-        box.y = y;
+function animateCursorHit(box) {
+    const boxIndex = currentBoxes.indexOf(box);
 
-        occupiedGrid = buildGrid();
-        renderBoard();
+    const element = document.querySelector(
+        `.project[data-box-index="${boxIndex}"]`
+    );
 
-        return true;
+    if (!element) {
+        return;
     }
 
-    // Find what is blocking the destination
-    for (let gridY = y; gridY < y + box.height; gridY++) {
-        for (let gridX = x; gridX < x + box.width; gridX++) {
+    element.classList.remove("cursor-hit");
 
-            // Ignore cells outside the board
-            if (
-                gridX < 0 ||
-                gridY < 0 ||
-                gridX >= currentSettings.width ||
-                gridY >= currentSettings.height
-            ) {
-                continue;
-            }
+    // Force the browser to restart the animation
+    element.offsetHeight;
 
-            const occupant = occupiedGrid[gridY][gridX];
+    element.classList.add("cursor-hit");
+}
 
-            if (occupant !== null && occupant !== box) {
-                selectedBox = occupant;
-                renderBoard();
-                return false;
+function moveBox(box, x, y) {
+    if (!canPlaceBox(box, x, y)) {
+        // Find what is blocking the destination
+        for (let gridY = y; gridY < y + box.height; gridY++) {
+            for (let gridX = x; gridX < x + box.width; gridX++) {
+
+                if (
+                    gridX < 0 ||
+                    gridY < 0 ||
+                    gridX >= currentSettings.width ||
+                    gridY >= currentSettings.height
+                ) {
+                    continue;
+                }
+
+                const occupant = occupiedGrid[gridY][gridX];
+
+                if (occupant !== null && occupant !== box) {
+                    selectedBox = occupant;
+                    renderBoard();
+                    animateCursorHit(occupant);
+                    return false;
+                }
             }
         }
+
+        return false;
     }
 
-    return false;
+    // Find the currently rendered element for this box
+    const boxIndex = currentBoxes.indexOf(box);
+
+    const oldElement = document.querySelector(
+        `.project[data-box-index="${boxIndex}"]`
+    );
+
+    let oldRect = null;
+
+    if (oldElement) {
+        oldRect = oldElement.getBoundingClientRect();
+    }
+
+    // Change the logical position
+    box.x = x;
+    box.y = y;
+
+    occupiedGrid = buildGrid();
+    renderBoard();
+
+    // Find the newly rendered element
+    const newElement = document.querySelector(
+        `.project[data-box-index="${boxIndex}"]`
+    );
+
+    if (oldRect && newElement) {
+        const newRect = newElement.getBoundingClientRect();
+
+        const dx = oldRect.left - newRect.left;
+        const dy = oldRect.top - newRect.top;
+
+        // Start visually at the old position
+        newElement.style.transition = "none";
+        newElement.style.transform =
+            `translate(${dx}px, ${dy}px)`;
+
+        // Force the browser to apply the starting position
+        newElement.offsetHeight;
+
+        // Slide to the new position
+        newElement.style.transition =
+            "transform 0.18s ease";
+
+        newElement.style.transform =
+            "translate(0, 0)";
+    }
+
+    return true;
 }
 
 function renderBoard() {
@@ -284,6 +366,8 @@ function renderBoard() {
         } else {
             box = createProjectBox(boxData);
         }
+        
+        box.dataset.boxIndex = currentBoxes.indexOf(boxData);
 
         box.style.gridColumn =
             `${boxData.x + 1} / span ${boxData.width}`;
