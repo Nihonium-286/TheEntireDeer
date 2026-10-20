@@ -1,0 +1,64 @@
+
+
+.game-page {
+    display: flex;
+    justify-content: center;
+    margin: 40px auto;
+}
+
+.game-panel {
+    width: min(100%, 640px);
+    padding: 20px;
+    box-sizing: border-box;
+
+    background: #252525;
+    border: 2px solid #555;
+    border-radius: 10px;
+}
+
+.game-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.game-toolbar button {
+    padding: 10px 16px;
+
+    background: #303030;
+    color: white;
+    border: 2px solid #555;
+    border-radius: 8px;
+
+    font: inherit;
+    cursor: pointer;
+}
+
+.game-toolbar button:hover {
+    background: #383838;
+}
+
+#game-board {
+    margin: 0 auto;
+}
+
+.mine-cell {
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 0;
+
+    background: #383838;
+    border: 1px solid #555;
+    border-radius: 3px;
+
+    color: white;
+    font: inherit;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.mine-cell:hover {
+    background: #484848;
+}

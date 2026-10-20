@@ -1,7 +1,7 @@
 const menuSettings = {
     main: {
-        width: 4,
-        height: 3
+        width: 5,
+        height: 4
     },
 
     desmos: {
@@ -17,6 +17,11 @@ const menuSettings = {
     scratch: {
 		width: 4,
 		height: 3
+	},
+	
+	minigames: {
+		width: 5,
+		height: 5
 	}
 };
 
@@ -64,6 +69,16 @@ const menus = [
         height: 2,
         x: 0,
         y: 1
+    },
+    
+    {
+        name: "Minigames",
+        description: "My minigames",
+        link: "minigames.html",
+        width: 3,
+        height: 1,
+        x: 1,
+        y: 2
     }
 ];
 
@@ -158,6 +173,18 @@ const projectDocs = [
     }
 ];
 
+const minigames = [
+	{
+        name: "Minesweeper",
+        description: "A browser minesweeper",
+        link: "games/minesweeper/index.html",
+        width: 1,
+        height: 1,
+        x: 0,
+        y: 0
+    }
+];
+
 function createMenuBox(menu) {
     const box = document.createElement("a");
 
@@ -206,6 +233,8 @@ if (menuName === "main") {
     currentBoxes = projectDocs;
 } else if (menuName === "scratch") {
     currentBoxes = scratchProjects;
+} else if (menuName === "minigames") {
+    currentBoxes = minigames;
 }
 
 function canPlaceBox(box, x, y) {
@@ -339,7 +368,8 @@ function renderBoard() {
         document.getElementById("menus") ||
         document.getElementById("desmos-projects") ||
         document.getElementById("project-documents") ||
-        document.getElementById("scratch-projects");
+        document.getElementById("scratch-projects") ||
+        document.getElementById("minigames");
 
     if (!container) {
         return;
