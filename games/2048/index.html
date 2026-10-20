@@ -1,0 +1,38 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2048</title>
+
+    <link rel="stylesheet" href="../../style.css">
+    <link rel="stylesheet" href="../../game.css">
+</head>
+<body data-game="2048">
+
+    <div class="navigation">
+        <a class="back-button"
+           href="../../minigames.html">
+            &lt; Minigames
+        </a>
+
+        <h1>2048</h1>
+
+        <div></div>
+    </div>
+
+    <main class="game-page">
+		<section class="game-panel">
+			<div class="game-toolbar">
+				<span>Score: <strong id="score">0</strong></span>
+				<button id="restart-button">New Game</button>
+			</div>
+
+			<div id="game-board"></div>
+			<p id="game-status" aria-live="polite">Ready</p>
+			<button id="keep-going-button" hidden>Keep Going</button>
+		</section>
+	</main>
+
+	<script src="game.js"></script>
+</body>
+</html>

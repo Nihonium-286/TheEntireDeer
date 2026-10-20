@@ -178,10 +178,20 @@ const minigames = [
         name: "Minesweeper",
         description: "A browser minesweeper",
         link: "games/minesweeper/index.html",
-        width: 1,
+        width: 2,
         height: 1,
         x: 0,
         y: 0
+    },
+    
+    {
+        name: "2048",
+        description: "A browser 2048",
+        link: "games/2048/index.html",
+        width: 1,
+        height: 1,
+        x: 0,
+        y: 1
     }
 ];
 

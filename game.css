@@ -62,3 +62,115 @@
 .mine-cell:hover {
     background: #484848;
 }
+
+/* 2048 board */
+#game-board {
+    position: relative; /* Keeps the tile layer inside the board */
+
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+
+    width: min(100%, 440px);
+    aspect-ratio: 1;
+    box-sizing: border-box;
+    padding: 10px;
+    margin: 0 auto;
+
+    background: #555;
+    border-radius: 10px;
+}
+
+/* Individual cells */
+.tile {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    min-height: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 6px;
+    font-size: clamp(18px, 5vw, 32px);
+    font-weight: bold;
+    color: white;
+}
+
+.tile-empty {
+    background: #303030;
+}
+
+.tile-2 {
+    background: #777;
+    color: #fff;
+}
+
+.tile-4 {
+    background: #999;
+    color: #fff;
+}
+
+.tile-8 {
+    background: #c87936;
+}
+
+.tile-16 {
+    background: #c65c2e;
+}
+
+.tile-32 {
+    background: #b94432;
+}
+
+.tile-64 {
+    background: #a52c24;
+}
+
+.tile-large-1 { background: #8c6ca8; }
+.tile-large-2 { background: #547db5; }
+.tile-large-3 { background: #369b91; }
+.tile-large-4 { background: #69a84b; }
+.tile-large-5 { background: #c19b36; }
+.tile-large-6 { background: #c76b91; }
+
+#tile-layer {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-rows: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.board-cell {
+    position: relative;
+    z-index: 0;
+    background: #303030;
+    border-radius: 6px;
+    aspect-ratio: 1;
+}
+
+#keep-going-button {
+    padding: 10px 16px;
+    background: #303030;
+    color: white;
+    border: 2px solid #555;
+    border-radius: 8px;
+    font: inherit;
+    cursor: pointer;
+}
+
+#keep-going-button:hover {
+    background: #383838;
+}
+
+#keep-going-button[hidden] {
+    display: none;
+}
