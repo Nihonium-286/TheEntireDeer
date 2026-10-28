@@ -192,6 +192,16 @@ const minigames = [
         height: 1,
         x: 0,
         y: 1
+    },
+    
+    {
+        name: "Snake",
+        description: "A browser snake",
+        link: "games/snake/index.html",
+        width: 1,
+        height: 1,
+        x: 1,
+        y: 1
     }
 ];
 

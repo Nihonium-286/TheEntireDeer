@@ -174,3 +174,18 @@
 #keep-going-button[hidden] {
     display: none;
 }
+
+/* Snake */
+#game-board.snake-board {
+    grid-template-columns: repeat(20, minmax(0, 1fr));
+    grid-template-rows: repeat(20, minmax(0, 1fr));
+    gap: 2px;
+    width: min(100%, 440px);
+}
+
+.snake-cell {
+    min-width: 0;
+    min-height: 0;
+    background: #303030;
+    border-radius: 1px;
+}
